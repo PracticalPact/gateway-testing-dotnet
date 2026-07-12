@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PracticalPact.Gateway", "PracticalPact.Gateway\PracticalPact.Gateway.csproj", "{09936272-7D6E-49E0-B2C1-701463979255}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PracticalPact.Gateway.UnitTests", "PracticalPact.Gateway.UnitTests\PracticalPact.Gateway.UnitTests.csproj", "{313B233F-2C44-48DE-9BDA-1F8A1B2497FD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PracticalPact.Gateway.IntegrationTests", "PracticalPact.Gateway.IntegrationTests\PracticalPact.Gateway.IntegrationTests.csproj", "{37E78D34-07F3-412B-A31E-4AACB92EEC6A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{09936272-7D6E-49E0-B2C1-701463979255}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09936272-7D6E-49E0-B2C1-701463979255}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09936272-7D6E-49E0-B2C1-701463979255}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09936272-7D6E-49E0-B2C1-701463979255}.Release|Any CPU.Build.0 = Release|Any CPU
+		{313B233F-2C44-48DE-9BDA-1F8A1B2497FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{313B233F-2C44-48DE-9BDA-1F8A1B2497FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{313B233F-2C44-48DE-9BDA-1F8A1B2497FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{313B233F-2C44-48DE-9BDA-1F8A1B2497FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37E78D34-07F3-412B-A31E-4AACB92EEC6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37E78D34-07F3-412B-A31E-4AACB92EEC6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37E78D34-07F3-412B-A31E-4AACB92EEC6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37E78D34-07F3-412B-A31E-4AACB92EEC6A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

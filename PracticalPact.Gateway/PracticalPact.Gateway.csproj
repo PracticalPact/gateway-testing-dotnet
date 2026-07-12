@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>PracticalPact.Gateway</RootNamespace>
+
+        <PackageId>PracticalPact.Gateway</PackageId>
+        <Version>0.1.0</Version>
+        <Authors>PracticalPact</Authors>
+        <Description>A Nuget package to test gateways with Pact.</Description>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageTags>pact pactnet cdct</PackageTags>
+        <RepositoryUrl>https://github.com/PracticalPact/gateway-testing-dotnet</RepositoryUrl>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="PactNet" Version="5.0.1" />
+      <PackageReference Include="PactNet.Output.Xunit" Version="1.0.0" />
+      <PackageReference Include="Yarp.ReverseProxy" Version="2.3.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    </ItemGroup>
+
+</Project>
