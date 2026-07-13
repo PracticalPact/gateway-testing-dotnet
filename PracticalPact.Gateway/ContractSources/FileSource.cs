@@ -1,3 +1,5 @@
+using PracticalPact.Gateway.Execution;
+
 namespace PracticalPact.Gateway.ContractSources;
 
 public sealed class FileSource(FileInfo fileInfo, ContractFilesHandler filesHandler) : IContractSource
@@ -9,7 +11,10 @@ public sealed class FileSource(FileInfo fileInfo, ContractFilesHandler filesHand
 
     public Task PostVerification(bool success, string originalContract, TransformationResult transformation)
     {
-        filesHandler.StoreTransformedContract(transformation);
-        return Task.CompletedTask;
+		if (success)
+		{
+			filesHandler.StoreTransformedContract(transformation);
+		}
+		return Task.CompletedTask;
     }
 }

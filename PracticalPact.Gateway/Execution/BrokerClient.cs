@@ -3,10 +3,10 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using PactNet.Verifier;
 
-namespace PracticalPact.Gateway;
+namespace PracticalPact.Gateway.Execution;
 
 /// <summary>
-/// Fetches all contracts for the Gateway from the broker.
+/// Handles interactions with the Broker.
 /// </summary>
 public sealed class BrokerClient : IDisposable
 {
@@ -46,7 +46,7 @@ public sealed class BrokerClient : IDisposable
 
 		foreach (var pacticipant in JsonDocument.Parse(jsonResponse).RootElement.GetProperty("_embedded").GetProperty("pacticipants").EnumerateArray())
 		{
-			string name = pacticipant.GetProperty("name").GetString();
+			string? name = pacticipant.GetProperty("name").GetString();
 			if (name == null || !namingUtility.IsProviderName(name))
 			{
 				continue;
@@ -78,7 +78,7 @@ public sealed class BrokerClient : IDisposable
 		}
 	}
 
-	private async Task SetBranch(string providerUri, string providerVersion, string providerBranch)
+	public async Task SetBranch(string providerUri, string providerVersion, string providerBranch)
 	{
 		string endpoint = $"{providerUri}/branches/{providerBranch}/versions/{providerVersion}";
 		var response = await _httpClient.PutAsJsonAsync(endpoint, new { });

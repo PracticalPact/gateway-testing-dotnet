@@ -3,7 +3,7 @@
     "name": "Frontend App"
   },
   "provider": {
-    "name": "some-name"
+    "name": "a-gateway-name---some-provider-name"
   },
   "interactions": [
     {
@@ -66,18 +66,16 @@
       "_id": "babbb142bb221808964219a47af60319f66b5b29",
       "description": "a request for a missing resource",
       "pending": false,
-      "providerStates": [
-        {
-          "name": "no resource exists"
-        }
-      ],
       "request": {
         "method": "GET",
         "path": "/resources/999",
         "headers": {
-          "Accept": [
-            "application/json"
-          ]
+            "Accept": [
+                "application/json"
+            ],
+            "original-header": [
+                "some header value"
+            ]
         }
       },
       "response": {

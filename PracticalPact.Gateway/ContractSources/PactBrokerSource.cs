@@ -1,3 +1,5 @@
+using PracticalPact.Gateway.Execution;
+
 namespace PracticalPact.Gateway.ContractSources;
 
 public sealed class PactBrokerSource(PactBrokerOptions options, ContractFilesHandler filesHandler) : IContractSource

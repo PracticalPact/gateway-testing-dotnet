@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Yarp.ReverseProxy.Forwarder;
 
-namespace PracticalPact.Gateway;
+namespace PracticalPact.Gateway.Execution;
 
-internal class CatchingForwarderHttpClientFactory(IServiceProvider serviceProvider) : ForwarderHttpClientFactory
+public sealed class CatchingForwarderHttpClientFactory(IServiceProvider serviceProvider) : ForwarderHttpClientFactory
 {
 	protected override HttpMessageHandler WrapHandler(ForwarderHttpClientContext context, HttpMessageHandler handler)
 	{

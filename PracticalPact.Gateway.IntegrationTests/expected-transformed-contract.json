@@ -1,0 +1,190 @@
+{
+    "consumer": {
+        "name": "Frontend App---Gateway"
+    },
+    "provider": {
+        "name": "some-provider-name"
+    },
+    "interactions": [
+        {
+            "description": "a request for a resource",
+            "providerStates": [
+                {
+                    "name": "a resource exists"
+                }
+            ],
+            "request": {
+                "headers": {
+                    "Accept": [
+                        "application/json"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip",
+                        "deflate"
+                    ],
+                    "X-Forwarded-For": [
+                        "127.0.0.1"
+                    ],
+                    "X-Forwarded-Host": [
+                        "localhost:5000"
+                    ],
+                    "X-Forwarded-Proto": [
+                        "http"
+                    ]
+                },
+                "method": "GET",
+                "path": "/elsewhere/resources/1"
+            },
+            "response": {
+                "body": {
+                    "content": {
+                        "id": 1,
+                        "name": "Example"
+                    },
+                    "contentType": "application/json",
+                    "encoded": false
+                },
+                "headers": {
+                    "Content-Type": [
+                        "application/json"
+                    ]
+                },
+                "matchingRules": {
+                    "body": {
+                        "$.id": {
+                            "combine": "AND",
+                            "matchers": [
+                                {
+                                    "match": "type"
+                                }
+                            ]
+                        },
+                        "$.name": {
+                            "combine": "AND",
+                            "matchers": [
+                                {
+                                    "match": "type"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "status": 200
+            },
+            "type": "Synchronous/HTTP"
+        },
+        {
+            "description": "a request for a missing resource",
+            "providerStates": [],
+            "request": {
+                "headers": {
+                    "Accept": [
+                        "application/json"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip",
+                        "deflate"
+                    ],
+                    "new-header": [
+                        "some header value"
+                    ],
+                    "X-Forwarded-For": [
+                        "127.0.0.1"
+                    ],
+                    "X-Forwarded-Host": [
+                        "localhost:5000"
+                    ],
+                    "X-Forwarded-Proto": [
+                        "http"
+                    ]
+                },
+                "method": "GET",
+                "path": "/elsewhere/resources/999"
+            },
+            "response": {
+                "status": 404
+            },
+            "type": "Synchronous/HTTP"
+        },
+        {
+            "description": "a request to create a resource",
+            "providerStates": [
+                {
+                    "name": "the resource can be created"
+                }
+            ],
+            "request": {
+                "headers": {
+                    "Accept": [
+                        "application/json"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip",
+                        "deflate"
+                    ],
+                    "X-Forwarded-For": [
+                        "127.0.0.1"
+                    ],
+                    "X-Forwarded-Host": [
+                        "localhost:5000"
+                    ],
+                    "X-Forwarded-Proto": [
+                        "http"
+                    ],
+                    "Content-Type": [
+                        "application/json"
+                    ],
+                    "Content-Length": [
+                        "26"
+                    ]
+                },
+                "method": "POST",
+                "path": "/elsewhere/resources",
+                "body": {
+                    "content": {
+                        "name": "Created example"
+                    },
+                    "contentType": "application/json",
+                    "encoded": false
+                }
+            },
+            "response": {
+                "body": {
+                    "content": {
+                        "name": "Created example"
+                    },
+                    "contentType": "application/json",
+                    "encoded": false
+                },
+                "headers": {
+                    "Content-Type": [
+                        "application/json"
+                    ]
+                },
+                "matchingRules": {
+                    "body": {
+                        "$.name": {
+                            "combine": "AND",
+                            "matchers": [
+                                {
+                                    "match": "type"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "status": 201
+            },
+            "type": "Synchronous/HTTP"
+        }
+    ],
+    "metadata": {
+        "pactRust": {
+            "ffi": "0.5.3",
+            "models": "1.3.9"
+        },
+        "pactSpecification": {
+            "version": "4.0"
+        }
+    }
+}

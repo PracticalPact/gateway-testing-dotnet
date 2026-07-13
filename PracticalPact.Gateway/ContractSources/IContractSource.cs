@@ -1,3 +1,5 @@
+using PracticalPact.Gateway.Execution;
+
 namespace PracticalPact.Gateway.ContractSources;
 
 public interface IContractSource

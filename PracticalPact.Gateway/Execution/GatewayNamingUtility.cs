@@ -1,4 +1,4 @@
-﻿namespace PracticalPact.Gateway;
+﻿namespace PracticalPact.Gateway.Execution;
 
 public class GatewayNamingUtility(string gatewayName)
 {

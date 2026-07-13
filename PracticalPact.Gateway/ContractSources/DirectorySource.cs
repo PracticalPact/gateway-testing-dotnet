@@ -1,4 +1,5 @@
 using System.Text.Json;
+using PracticalPact.Gateway.Execution;
 
 namespace PracticalPact.Gateway.ContractSources;
 
@@ -15,7 +16,10 @@ public sealed class DirectorySource(DirectoryInfo directoryInfo, ContractFilesHa
 
     public Task PostVerification(bool success, string originalContract, TransformationResult transformation)
     {
-        filesHandler.StoreTransformedContract(transformation);
+        if (success)
+        {
+            filesHandler.StoreTransformedContract(transformation);
+        }
         return Task.CompletedTask;
     }
 }

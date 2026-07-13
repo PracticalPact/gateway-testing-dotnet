@@ -6,7 +6,7 @@ using PracticalPact.Gateway.ContractSources;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace PracticalPact.Gateway;
+namespace PracticalPact.Gateway.Execution;
 
 public sealed class GatewayPactVerifier : IPactVerifier
 {

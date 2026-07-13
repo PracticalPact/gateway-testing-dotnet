@@ -1,13 +1,13 @@
 using Microsoft.AspNetCore.Http;
 using PracticalPact.Gateway.ContractData;
 
-namespace PracticalPact.Gateway;
+namespace PracticalPact.Gateway.Execution;
 
 public sealed class CatchInitialRequestMiddleware(RequestDelegate next, ContractBuilderManager contractBuilderManager)
 {
     public async Task Invoke(HttpContext context)
     {
-        if (context.Request.Path == GatewaySetupUtility.PROVIDER_STATE_ENDPOINT)
+        if (context.Request.Path == PactRunner.PROVIDER_STATE_ENDPOINT)
         {
             
         }

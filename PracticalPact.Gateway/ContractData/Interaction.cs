@@ -17,7 +17,7 @@ public sealed class Interaction
 
     private bool MatchesProviderState(string? providerState)
     {
-        if (providerState == null){
+        if (string.IsNullOrEmpty(providerState)){
             return ProviderStates.Count == 0;
         }
         return ProviderStates.Any(ps => ps.Name == providerState);

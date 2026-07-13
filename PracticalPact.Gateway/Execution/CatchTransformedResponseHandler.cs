@@ -1,6 +1,6 @@
 using PracticalPact.Gateway.ContractData;
 
-namespace PracticalPact.Gateway;
+namespace PracticalPact.Gateway.Execution;
 
 public sealed class CatchTransformedResponseHandler(ContractBuilderManager contractBuilderManager) : DelegatingHandler
 {

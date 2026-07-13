@@ -2,7 +2,7 @@ using PactNet.Exceptions;
 using PactNet.Verifier;
 using PracticalPact.Gateway.ContractSources;
 
-namespace PracticalPact.Gateway;
+namespace PracticalPact.Gateway.Execution;
 
 public sealed class GatewayPactVerifierSource(PactRunner runner, ContractBuilderManager manager, string gatewayName, IContractSource contractSource) : IPactVerifierSource
 {

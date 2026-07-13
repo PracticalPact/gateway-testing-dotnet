@@ -1,12 +1,13 @@
 using System.Text.Json;
+using PracticalPact.Gateway.Execution;
 
 namespace PracticalPact.Gateway.ContractSources;
 
 public sealed class ContractFilesHandler
 {
-    private const string _path = "pacts_runtime";
-    private readonly string _pendingPath = _path + "/pending";
-    private readonly string _transformedPath = _path + "/transformed";
+    public const string BasePath = "pacts_runtime";
+	public static readonly string PendingPath = Path.Combine(BasePath, "pending");
+    public static readonly string TransformedPath = Path.Combine(BasePath, "transformed");
     
     public ContractFilesHandler()
     {
@@ -22,17 +23,17 @@ public sealed class ContractFilesHandler
         {
             throw new InvalidOperationException("Was unable to get consumer name, provider name, or consumer version from contract json");
         }
-        File.WriteAllText(Path.Combine(pending ? _pendingPath : _path, $"{providerName}---{consumerName}---{consumerVersion}.json"), content);
+		File.WriteAllText(Path.Combine(pending ? PendingPath : BasePath, $"{providerName}---{consumerName}---{consumerVersion}.json"), content);
     }
 
     public IEnumerable<ContractFile> GetContracts()
     {
-        foreach (string contractPath in Directory.GetFiles(_path))
+        foreach (string contractPath in Directory.GetFiles(BasePath))
         {
             yield return new ContractFile(contractPath, File.ReadAllText(contractPath), false);
         }
 
-		foreach (string contractPath in Directory.GetFiles(_pendingPath))
+		foreach (string contractPath in Directory.GetFiles(PendingPath))
 		{
 			yield return new ContractFile(contractPath, File.ReadAllText(contractPath), true);
 		}
@@ -40,18 +41,18 @@ public sealed class ContractFilesHandler
 
     public void StoreTransformedContract(TransformationResult transformation)
     {
-        File.WriteAllText(Path.Combine(_transformedPath, $"{transformation.Consumer}-TO-{transformation.Provider}.json"), transformation.Contract);
+		File.WriteAllText(Path.Combine(TransformedPath, $"{transformation.Consumer}-TO-{transformation.Provider}.json"), transformation.Contract);
     }
 
     private void EnsureEmptyDirectory()
     {
-        if (Directory.Exists(_path))
+        if (Directory.Exists(BasePath))
         {
-            Directory.Delete(_path, true);
+            Directory.Delete(BasePath, true);
         }
 
-        Directory.CreateDirectory(_path);
-        Directory.CreateDirectory(_pendingPath);
-        Directory.CreateDirectory(_transformedPath);
+        Directory.CreateDirectory(BasePath);
+        Directory.CreateDirectory(PendingPath);
+        Directory.CreateDirectory(TransformedPath);
     }
 }

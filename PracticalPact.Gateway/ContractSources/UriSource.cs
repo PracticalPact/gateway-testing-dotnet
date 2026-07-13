@@ -1,4 +1,6 @@
-﻿namespace PracticalPact.Gateway.ContractSources;
+﻿using PracticalPact.Gateway.Execution;
+
+namespace PracticalPact.Gateway.ContractSources;
 
 internal class UriSource(PactUriOptions options, ContractFilesHandler filesHandler) : IContractSource
 {
