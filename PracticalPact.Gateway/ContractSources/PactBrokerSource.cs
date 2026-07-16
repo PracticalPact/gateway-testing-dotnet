@@ -32,7 +32,7 @@ public sealed class PactBrokerSource(PactBrokerOptions options, ContractFilesHan
     
     private async Task FetchContracts(string providerName)
     {
-        await foreach ((string contract, bool pending) in _client.FetchPacts(options.BrokerUri, providerName, options.ChosenConsumerVersionSelectors, options.PendingEnabled, options.PublishOptions?.Branch))
+        await foreach ((string contract, bool pending) in _client.FetchPacts(options.BrokerUri, providerName, options.ChosenConsumerVersionSelectors, options.PendingEnabled, options.ProviderBranchFilter, options.WipPactsIncludedSince))
         {
             filesHandler.StoreContract(contract, pending);
         }

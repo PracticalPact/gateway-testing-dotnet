@@ -81,7 +81,6 @@ public class PactBrokerOptions : IPactBrokerOptions
         /// <returns>Fluent builder</returns>
         public IPactBrokerOptions ProviderBranch(string branch)
         {
-            throw new NotImplementedException();
             ProviderBranchFilter = branch;
             return this;
         }
@@ -138,7 +137,6 @@ public class PactBrokerOptions : IPactBrokerOptions
         /// <returns>Fluent builder</returns>
         public IPactBrokerOptions IncludeWipPactsSince(DateTime date)
         {
-            throw new NotImplementedException();
             WipPactsIncludedSince = date;
             return this;
         }

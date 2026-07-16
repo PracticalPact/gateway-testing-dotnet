@@ -19,9 +19,9 @@ public sealed class BrokerClient : IDisposable
 		return await response.Content.ReadAsStringAsync();
 	}
 
-	public async IAsyncEnumerable<(string, bool)> FetchPacts(Uri brokerUri, string providerName, ICollection<ConsumerVersionSelector> consumerVersionSelectors, bool includePending, string? gatewayBranch)
+	public async IAsyncEnumerable<(string, bool)> FetchPacts(Uri brokerUri, string providerName, ICollection<ConsumerVersionSelector> consumerVersionSelectors, bool includePending, string? gatewayBranch, DateTime? wipDate)
 	{
-		var response = await _httpClient.PostAsJsonAsync($"{brokerUri}pacts/provider/{providerName}/for-verification", new FetchPactsDto(consumerVersionSelectors, includePending, gatewayBranch), FetchPactsDto.serializerOptions);
+		var response = await _httpClient.PostAsJsonAsync($"{brokerUri}pacts/provider/{providerName}/for-verification", new FetchPactsDto(consumerVersionSelectors, includePending, gatewayBranch, wipDate?.ToString("yyyy-MM-dd")), FetchPactsDto.serializerOptions);
 		response.EnsureSuccessStatusCode();
 		var jsonResponse = await response.Content.ReadAsStringAsync();
 		var contractEndpoints = JsonDocument.Parse(jsonResponse).RootElement.GetProperty("_embedded").GetProperty("pacts");
@@ -108,7 +108,7 @@ public sealed class BrokerClient : IDisposable
 		_httpClient.Dispose();
 	}
 
-	private record FetchPactsDto(ICollection<ConsumerVersionSelector> ConsumerVersionSelectors, bool IncludePendingStatus, string? ProviderVersionBranch)
+	private record FetchPactsDto(ICollection<ConsumerVersionSelector> ConsumerVersionSelectors, bool IncludePendingStatus, string? ProviderVersionBranch, string? IncludeWipPactsSince)
 	{
 		public static readonly JsonSerializerOptions serializerOptions = new()
 		{
