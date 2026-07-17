@@ -85,17 +85,48 @@ public sealed class BrokerClient : IDisposable
 		response.EnsureSuccessStatusCode();
 	}
 
-	public async Task PublishContract(string originalContract, Uri brokerUri, TransformationResult transformation, string gatewayVersion, string? consumerBranch)
+	public async Task PublishContract(string originalContract, Uri brokerUri, TransformationResult transformation, string gatewayVersion, string? gatewayBranch)
 	{
-		string? originalConsumerVersion = JsonDocument.Parse(originalContract).RootElement.GetProperty("_links").GetProperty("pb:consumer-version").GetProperty("name").GetString();
+		JsonElement originalConsumerVersionProp = JsonDocument.Parse(originalContract).RootElement.GetProperty("_links").GetProperty("pb:consumer-version");
+
+		string? originalConsumerVersion = originalConsumerVersionProp.GetProperty("name").GetString();
 		if (originalConsumerVersion == null)
 		{
 			throw new InvalidOperationException("Could not find consumer version in original contract");
 		}
 		string combinedVersion = GatewayNamingUtility.CreateConsumerGatewayVersion(originalConsumerVersion, gatewayVersion);
-		PublishContractsDto dto = new(transformation.Consumer, combinedVersion, consumerBranch, [new ContractDto(transformation.Consumer, transformation.Provider, "pact", "application/json", Base64Encode(transformation.Contract))]);
+
+		string? consumerBranch = await GetOriginalConsumerBranch(originalConsumerVersionProp);
+
+		PublishContractsDto dto = new(transformation.Consumer, combinedVersion, gatewayBranch, [new ContractDto(transformation.Consumer, transformation.Provider, "pact", "application/json", Base64Encode(transformation.Contract))]);
 		var response = await _httpClient.PostAsJsonAsync($"{brokerUri}contracts/publish", dto);
 		response.EnsureSuccessStatusCode();
+	}
+
+	public async Task<string?> GetOriginalConsumerBranch(JsonElement originalConsumerVersionProp)
+	{
+		try
+		{
+			string? consumerVersionLink = originalConsumerVersionProp.GetProperty("href").GetString();
+			if (consumerVersionLink == null)
+			{
+				return null;
+			}
+			var response = await _httpClient.GetAsync(consumerVersionLink);
+			response.EnsureSuccessStatusCode();
+			string consumerVersionContent = await response.Content.ReadAsStringAsync();
+			JsonElement branches = JsonDocument.Parse(consumerVersionContent).RootElement.GetProperty("_embedded").GetProperty("branchVersions");
+			foreach (JsonElement branch in branches.EnumerateArray())
+			{
+				string? branchName = branch.GetProperty("name").GetString();
+				return branchName;
+			}
+		}
+		catch (Exception)
+		{
+			return null;
+		}
+		return null;
 	}
 
 	private static string Base64Encode(string plainText)

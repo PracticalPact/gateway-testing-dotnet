@@ -17,12 +17,7 @@
       ],
       "request": {
         "method": "GET",
-        "path": "/resources/1",
-        "headers": {
-          "Accept": [
-            "application/json"
-          ]
-        }
+        "path": "/resources/1"
       },
       "response": {
         "status": 200,

@@ -16,7 +16,7 @@
             "request": {
                 "headers": {
                     "Accept": [
-                        "application/json"
+                        "*/*"
                     ],
                     "Accept-Encoding": [
                         "gzip",

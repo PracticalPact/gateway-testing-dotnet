@@ -5,7 +5,7 @@ namespace PracticalPact.Gateway.ContractData;
 
 public class Request
 {
-	public required JsonElement Headers { get; set; }
+	public JsonElement? Headers { get; set; }
 	public required string Method { get; set; }
 	public required string Path { get; set; }
 	public JsonElement? Body { get; set; }
@@ -117,35 +117,38 @@ public class Request
 			return false;
 		}
 
-		foreach (var headerProperty in Headers.EnumerateObject())
+		if (Headers != null)
 		{
-			var headerName = headerProperty.Name;
-
-			if (!other.Headers.TryGetProperty(
-				headerName,
-				out var actualHeader))
+			foreach (var headerProperty in Headers.Value.EnumerateObject())
 			{
-				return false;
-			}
+				var headerName = headerProperty.Name;
 
-			var expectedValues =
-				headerProperty.Value
-					.EnumerateArray()
-					.Select(x => x.GetString())
-					.Where(x => x != null);
-
-			var actualValues =
-				actualHeader
-					.EnumerateArray()
-					.Select(x => x.GetString())
-					.Where(x => x != null)
-					.ToHashSet(StringComparer.OrdinalIgnoreCase);
-
-			foreach (var expected in expectedValues)
-			{
-				if (!actualValues.Contains(expected!))
+				if (!other.Headers!.Value.TryGetProperty(
+					headerName,
+					out var actualHeader))
 				{
 					return false;
+				}
+
+				var expectedValues =
+					headerProperty.Value
+						.EnumerateArray()
+						.Select(x => x.GetString())
+						.Where(x => x != null);
+
+				var actualValues =
+					actualHeader
+						.EnumerateArray()
+						.Select(x => x.GetString())
+						.Where(x => x != null)
+						.ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+				foreach (var expected in expectedValues)
+				{
+					if (!actualValues.Contains(expected!))
+					{
+						return false;
+					}
 				}
 			}
 		}
