@@ -1,0 +1,79 @@
+{
+	"consumer": {
+		"name": "cdct-test-consumer-4"
+	},
+	"provider": {
+		"name": "cdct-test-gateway---cdct-test-provider-3"
+	},
+	"interactions": [
+		{
+			"_id": "260d50a2544108346b05af79aaa7c583a7cb955b",
+			"description": "a request to create a new post",
+			"pending": false,
+			"providerStates": [
+				{
+					"name": "a user is logged in with session id: valid-token"
+				}
+			],
+			"request": {
+				"method": "POST",
+				"path": "/forum/posts",
+				"headers": {
+					"Content-Type": [
+						"application/json"
+					],
+					"Accept": [
+						"application/json"
+					]
+				},
+				"body": {
+					"content": {
+						"content": "Post content",
+						"title": "A Post Title"
+					},
+					"contentType": "application/json",
+					"encoded": false
+				}
+			},
+			"response": {
+				"body": {
+					"content": {
+						"content": "Post content",
+						"id": "new-post-id",
+						"title": "A Post Title"
+					},
+					"contentType": "application/json",
+					"encoded": false
+				},
+				"headers": {
+					"Content-Type": [
+						"application/json"
+					]
+				},
+				"matchingRules": {
+					"body": {
+						"$.id": {
+							"combine": "AND",
+							"matchers": [
+								{
+									"match": "type"
+								}
+							]
+						}
+					}
+				},
+				"status": 201
+			},
+			"type": "Synchronous/HTTP"
+		}
+	],
+	"metadata": {
+		"pactRust": {
+			"ffi": "0.4.27",
+			"models": "1.2.8"
+		},
+		"pactSpecification": {
+			"version": "4.0"
+		}
+	}
+}

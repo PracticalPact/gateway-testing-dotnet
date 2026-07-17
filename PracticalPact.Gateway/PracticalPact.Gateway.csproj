@@ -7,7 +7,7 @@
         <RootNamespace>PracticalPact.Gateway</RootNamespace>
 
         <PackageId>PracticalPact.Gateway</PackageId>
-        <Version>0.2.1</Version>
+        <Version>0.2.2</Version>
         <Authors>PracticalPact</Authors>
         <Description>A Nuget package to test gateways with Pact.</Description>
         <PackageReadmeFile>README.md</PackageReadmeFile>

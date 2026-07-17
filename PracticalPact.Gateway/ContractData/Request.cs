@@ -13,40 +13,33 @@ public class Request
 	public static Request FromHttpRequest(ReadHttpRequest readRequest)
 	{
 		HttpRequest request = readRequest.Request;
-		var headers = request.Headers.ToDictionary(
-			h => h.Key,
-			h => h.Value.ToArray());
+		var headers = request.Headers.ToDictionary(h => h.Key, h => h.Value.ToArray());
 
 		return new Request
 		{
 			Method = request.Method,
 			Path = request.Path,
 			Headers = JsonSerializer.SerializeToElement(headers),
-			Body = readRequest.DeserializedBody
+			Body = readRequest.DeserializedBody == null ? null : JsonSerializer.SerializeToElement(new Dictionary<string, JsonElement> { ["content"] = readRequest.DeserializedBody.Value })
 		};
 	}
 
 	public Request FromHttpRequestMessage(ReadHttpRequestMessage readRequest)
 	{
 		HttpRequestMessage request = readRequest.Request;
-		var headers = request.Headers.ToDictionary(
-			h => h.Key,
-			h => h.Value.ToArray());
+		var headers = request.Headers.ToDictionary(h => h.Key, h => h.Value.ToArray());
 
 		if (request.Content != null)
 		{
-			foreach (var h in request.Content.Headers)
+			foreach (var header in request.Content.Headers)
 			{
-				if (headers.TryGetValue(h.Key, out var existing))
+				if (headers.TryGetValue(header.Key, out var existing))
 				{
-					headers[h.Key] = existing
-						.Concat(h.Value)
-						.Distinct()
-						.ToArray();
+					headers[header.Key] = existing.Concat(header.Value).Distinct().ToArray();
 				}
 				else
 				{
-					headers[h.Key] = h.Value.ToArray();
+					headers[header.Key] = header.Value.ToArray();
 				}
 			}
 		}
@@ -55,27 +48,17 @@ public class Request
 
 		if (readRequest.DeserializedBody.HasValue)
 		{
-			if (Body.HasValue &&
-			Body.Value.ValueKind == JsonValueKind.Object)
+			if (Body.HasValue && Body.Value.ValueKind == JsonValueKind.Object)
 			{
-				var template =
-					JsonSerializer.Deserialize<Dictionary<string, object?>>(
-						Body.Value.GetRawText())!;
-
-				template["content"] =
-					JsonSerializer.Deserialize<object>(
-						readRequest.DeserializedBody.Value.GetRawText());
-
+				var template = JsonSerializer.Deserialize<Dictionary<string, object?>>(Body.Value.GetRawText())!;
+				template["content"] = JsonSerializer.Deserialize<object>(readRequest.DeserializedBody.Value.GetRawText());
 				newBody = JsonSerializer.SerializeToElement(template);
 			}
 			else
 			{
-				newBody = JsonSerializer.SerializeToElement(
-					new Dictionary<string, object?>
+				newBody = JsonSerializer.SerializeToElement(new Dictionary<string, object?>
 					{
-						["content"] =
-							JsonSerializer.Deserialize<object>(
-								readRequest.DeserializedBody.Value.GetRawText())
+						["content"] = JsonSerializer.Deserialize<object>(readRequest.DeserializedBody.Value.GetRawText())
 					});
 			}
 		}
@@ -165,13 +148,7 @@ public class Request
 
 		var value = body.Value;
 
-		if (value.ValueKind == JsonValueKind.Object &&
-			value.TryGetProperty("content", out var content))
-		{
-			return content;
-		}
-
-		return value;
+		return value.GetProperty("content");
 	}
 
 	private static bool JsonEquals(JsonElement? left, JsonElement? right)
@@ -200,29 +177,22 @@ public class Request
 		{
 			case JsonValueKind.Object:
 				{
-					var rightProperties =
-						right.EnumerateObject()
-							 .ToDictionary(x => x.Name);
+					var rightProperties = right.EnumerateObject().ToDictionary(x => x.Name);
 
 					foreach (var property in left.EnumerateObject())
 					{
-						if (!rightProperties.TryGetValue(
-							property.Name,
-							out var otherProperty))
+						if (!rightProperties.TryGetValue(property.Name, out var otherProperty))
 						{
 							return false;
 						}
 
-						if (!JsonEquals(
-							property.Value,
-							otherProperty.Value))
+						if (!JsonEquals(property.Value, otherProperty.Value))
 						{
 							return false;
 						}
 					}
 
-					return left.EnumerateObject().Count()
-						== right.EnumerateObject().Count();
+					return left.EnumerateObject().Count() == right.EnumerateObject().Count();
 				}
 
 			case JsonValueKind.Array:
@@ -237,9 +207,7 @@ public class Request
 
 					for (int i = 0; i < leftItems.Length; i++)
 					{
-						if (!JsonEquals(
-							leftItems[i],
-							rightItems[i]))
+						if (!JsonEquals(leftItems[i], rightItems[i]))
 						{
 							return false;
 						}
